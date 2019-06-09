@@ -3,9 +3,7 @@ import os
 
 from aiogram import Bot, Dispatcher, executor, types
 
-with open(os.path.dirname(os.path.realpath(__file__)) + '/TOKEN.txt') as file:
-    TOKEN = file.readline().strip()
-
+TOKEN = os.environ.get('API_TOKEN', None)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -29,5 +27,4 @@ async def handle_poll(message: types.Message):
     await bot.send_poll(message.chat.id, 'Orario pranzo: ', options=options, disable_notification=False, reply_to_message_id=None)
 
 
-if __name__ == '__main__':
-    executor.start_polling(dp)
+executor.start_polling(dp)
