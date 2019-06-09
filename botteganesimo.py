@@ -1,7 +1,11 @@
 import logging
+import os
+
 from aiogram import Bot, Dispatcher, executor, types
 
-TOKEN = '642683089:AAEFxTdYzP_LTFXinJ5dMlUy4mk4m55OlfU'
+with open(os.path.dirname(os.path.realpath(__file__)) + '/TOKEN.txt') as file:
+    TOKEN = file.readline().strip()
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -27,4 +31,3 @@ async def handle_poll(message: types.Message):
 
 if __name__ == '__main__':
     executor.start_polling(dp)
-
