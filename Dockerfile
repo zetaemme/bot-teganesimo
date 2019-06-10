@@ -1,9 +1,9 @@
 FROM python:3.7
 
-RUN pip3 install aiogram
+RUN pip3 install --trusted-host pypi.python.org aiogram
 
 RUN mkdir /app
 ADD . /app
 WORKDIR /app
 
-CMD python3 /app/botteganesimo.py
+CMD ["python3", "botteganesimo.py"]
