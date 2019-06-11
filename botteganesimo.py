@@ -3,7 +3,8 @@ import os
 
 from aiogram import Bot, Dispatcher, executor, types
 
-TOKEN = os.environ.get('API_TOKEN', None)
+with open(os.path.dirname(os.path.realpath(__file__)) + '/TOKEN.txt') as file:
+    TOKEN = file.readline().strip()
 
 logging.basicConfig(level=logging.INFO)
 
