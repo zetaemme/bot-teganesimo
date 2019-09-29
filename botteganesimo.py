@@ -27,5 +27,5 @@ async def handle_poll(message: types.Message):
 
     await bot.send_poll(message.chat.id, 'Orario pranzo: ', options=options, disable_notification=False, reply_to_message_id=None)
 
-
+  
 executor.start_polling(dp)
