@@ -1,31 +1,34 @@
-import logging
-import os
+import os, logging
+from telegram.ext import Updater, CommandHandler
 
-from aiogram import Bot, Dispatcher, executor, types
-
+# Get token from TOKEN.txt file (create it if not existent)
 with open(os.path.dirname(os.path.realpath(__file__)) + '/TOKEN.txt') as file:
     TOKEN = file.readline().strip()
 
-logging.basicConfig(level=logging.INFO)
+# Updater and Dispatcher definition
+updater = Updater(token = TOKEN, use_context = True)
+dispatcher = updater.dispatcher
 
-bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+# Set logging for error handling format
+logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s', level = logging.INFO)
 
-@dp.message_handler(commands=['pray'])
-async def sand_pray(message: types.Message):
-    await bot.send_message(message.chat.id, 'In nome del Padre, del Figlio e della scarpetta con il ragù')
-
-
-@dp.message_handler(commands=['help'])
-async def send_help(message: types.Message):
-    await bot.send_message(message.chat.id, "/vote - Inizia votazione\n/pray - Una bella preghierina")
+# Pray command
+def pray(update, context):
+    context.bot.send_message(chat_id = update.message.chat_id, text = 'In nome del Padre, del Figlio e della scarpetta con il ragù')
 
 
-@dp.message_handler(commands=['poll'])
-async def handle_poll(message: types.Message):
+# Poll command
+def poll(update, context):
     options = ['11.45', '12.00', '12.15', '12.30', '12.45', '13.00', '13.15', 'Ho il mio cibo', 'Oggi non vengo']
+    context.bot.send_poll(chat_id=update.message.chat_id, question = 'Orario Pranzo:', options = options)
 
-    await bot.send_poll(message.chat.id, 'Orario pranzo: ', options=options, disable_notification=False, reply_to_message_id=None)
 
-  
-executor.start_polling(dp)
+# Handler
+pray_handler = CommandHandler('pray', pray)
+poll_handler = CommandHandler('poll', poll)
+
+dispatcher.add_handler(pray_handler)
+dispatcher.add_handler(poll_handler)
+
+updater.start_polling()
+print('Polling...')
